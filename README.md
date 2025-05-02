@@ -1,4 +1,4 @@
-# Promistop ⏹️
+# Promistop 
 
 > A lightweight utility to create cancellable promises in JavaScript
 
@@ -56,3 +56,5 @@ A `CancellablePromise<T>` with:
 - `.cancel(reason?)` - Cancels the promise with an optional reason
 - `.isCancelled()` - Returns whether the promise has been cancelled
 
+##  ⚠️ Issues/Errors
+For any hiccups with the package, drop an email to Kumarashish87998@gmail.com with "Error || Promistop" as the subject. 📧
