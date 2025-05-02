@@ -4,9 +4,12 @@
 
 **Promistop** adds `.cancel()` and `.isCancelled()` methods to any async task, with optional `AbortController` support.
 
-[![npm version](https://img.shields.io/npm/v/promistop)](https://www.npmjs.com/package/promistop)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/promistop)](https://bundlephobia.com/package/promistop)
-[![license](https://img.shields.io/npm/l/promistop)](LICENSE)
+![Build](https://img.shields.io/github/actions/workflow/status/ashishcumar/promistop/publish.yml)
+![Fast](https://img.shields.io/badge/fast-5kb-blue)
+![Lightweight](https://img.shields.io/badge/lightweight-5kb-green)
+![Npm-Version](https://img.shields.io/npm/v/promistop.svg)
+![Trusted](https://img.shields.io/badge/trusted-orange)
+![No Dependency](https://img.shields.io/badge/dependencies-none-brightgreen)
 
 ## 🔧 Features
 
