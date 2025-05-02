@@ -2,7 +2,6 @@ interface CancellablePromise<T> extends Promise<T> {
   cancel: (reason?: string) => void;
   isCancelled: () => boolean;
 }
-
 interface CancellableOptions {
   abortable?: boolean;
   cancelReason?: string;
