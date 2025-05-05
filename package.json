@@ -1,6 +1,6 @@
 {
   "name": "promistop",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Promistop is a lightweight utility that adds cancellation support to any async function. It extends promises with `.cancel()` and `.isCancelled()` methods, optionally using AbortController. Ideal for JavaScript apps using async operations like fetch, timeouts, or background tasks.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
