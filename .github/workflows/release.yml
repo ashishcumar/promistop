@@ -40,11 +40,11 @@ jobs:
           git add .
           git commit -m "chore: commit changes before version bump" || echo "No changes to commit"
 
-      - name: Bump version
+      - name: Bump version and generate changelog
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npm version patch -m "chore(release): %s [skip ci]"
+          npx release-it --ci
 
       - name: Configure NPM authentication
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
