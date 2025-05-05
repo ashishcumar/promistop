@@ -1,4 +1,4 @@
-name: Automated Promistop Release
+name: Automated promistop release
 
 on:
   push:
@@ -13,23 +13,66 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: "20"
+          node-version: "16"
           registry-url: "https://registry.npmjs.org"
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build package (optional)
+      - name: Build package
         run: npm run build
 
-      - name: Run release-it
+      - name: Set up Git identity
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit uncommitted changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "chore: commit changes before version bump" || echo "No changes to commit"
+
+      - name: Bump version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm version patch -m "chore(release): %s [skip ci]"
+
+      - name: Configure NPM authentication
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
+      - name: Show .npmrc
+        run: cat ~/.npmrc
+
+      - name: Verify NPM_TOKEN
+        run: |
+          if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
+            echo "NPM_TOKEN is not set"
+            exit 1
+          else
+            echo "NPM_TOKEN is set"
+          fi
+
+      - name: Debug npm whoami
+        run: npm whoami
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_TOKEN }}
-        run: npx release-it --ci
+
+      - name: Publish package
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
+
+      - name: Push changes and tags
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: git push origin HEAD:main --tags
