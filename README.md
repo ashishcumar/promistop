@@ -1,4 +1,4 @@
-# Promistop 
+# Promistop
 
 > A lightweight utility to create cancellable promises in JavaScript
 
@@ -25,21 +25,49 @@ npm install promistop
 ```
 
 ## 🚀 Usage
+### - API Call with `fetch` and `AbortSignal`
+```ts
+import { makeCancellable } from "promistop";
 
-```javascript
-import { makeCancellable } from 'promistop';
-
-const cancellable = makeCancellable(async ({ signal }) => {
-  const res = await fetch('/api/data', { signal });
-  return res.json();
-}, { abortable: true });
+const cancellable = makeCancellable(
+  async ({ signal }) => {
+    const res = await fetch("/api/data", { signal });
+    return res.json();
+  },
+  { abortable: true }
+);
 
 cancellable
-  .then(data => console.log(data))
-  .catch(err => console.error(err));
+  .then((data) => console.log(data))
+  .catch((err) => console.error(err));
 
 // Cancel the request if needed
 cancellable.cancel("User navigated away");
+```
+
+### - Wrapping a `setTimeout`
+```ts
+import { makeCancellable } from "promistop";
+
+const delay = (ms: number) =>
+  makeCancellable(
+    () =>
+      new Promise((resolve) => {
+        const id = setTimeout(() => resolve("Done waiting"), ms);
+        // Optional cleanup if extending
+        return () => clearTimeout(id);
+      }),
+    { cancelReason: "Timeout manually cancelled" }
+  );
+
+const timeoutPromise = delay(3000);
+
+timeoutPromise.then(console.log).catch(console.error);
+
+// Cancel before it completes
+setTimeout(() => {
+  timeoutPromise.cancel("Cancelled early");
+}, 1000);
 ```
 
 ## 🧩 API
@@ -49,15 +77,19 @@ cancellable.cancel("User navigated away");
 Creates a cancellable promise from any async function.
 
 #### Parameters:
+
 - **asyncFn**: `(params?: { signal?: AbortSignal }) => Promise<T> | T` – your async task
 - **options**:
   - **abortable?**: `boolean` – enable AbortController support
   - **cancelReason?**: `string` – default cancel message
 
 #### Returns:
+
 A `CancellablePromise<T>` with:
+
 - `.cancel(reason?)` - Cancels the promise with an optional reason
 - `.isCancelled()` - Returns whether the promise has been cancelled
 
-##  ⚠️ Issues/Errors
+## ⚠️ Issues/Errors
+
 For any hiccups with the package, drop an email to Kumarashish87998@gmail.com with "Error || Promistop" as the subject. 📧

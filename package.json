@@ -35,6 +35,8 @@
   "author": "Ashish",
   "license": "MIT",
   "devDependencies": {
+    "@release-it/conventional-changelog": "^10.0.1",
+    "release-it": "^19.0.2",
     "tsup": "^8.4.0",
     "typescript": "^5.8.3"
   },

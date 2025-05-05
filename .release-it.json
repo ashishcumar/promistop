@@ -1,0 +1,24 @@
+{
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "conventionalcommits"
+      }
+    },
+    "git": {
+      "requireCleanWorkingDir": true,
+      "tagName": "v${version}",
+      "commitMessage": "chore(release): v${version}",
+      "push": true
+    },
+    "npm": {
+      "publish": true
+    },
+    "github": {
+      "release": true
+    },
+    "hooks": {
+      "after:bump": "npm run build",
+      "after:release": "echo Successfully released ${version}!"
+    }
+  }
+  
